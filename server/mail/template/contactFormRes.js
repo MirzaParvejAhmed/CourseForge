@@ -74,7 +74,7 @@ exports.contactUsEmail = (
     
     <body>
         <div class="container">
-            <a href="https://codeplay-edtech-project.vercel.app"><img class="logo"
+            <a href="https://techshala.vercel.app/"><img class="logo"
                     src="https://res.cloudinary.com/dazj8oisj/image/upload/v1738360793/abhi_logo_1_yhursc.png" alt="TechShala Logo"></a>
             <div class="message">Contact Form Confirmation</div>
             <div class="body">
