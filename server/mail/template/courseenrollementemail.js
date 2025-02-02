@@ -67,7 +67,7 @@ const courseEnrollmentemail = (courseName, name) => {
     
     <body>
         <div class="container">
-            /*<a href="https://codeplay-edtech-project.vercel.app"><img class="logo" src="https://res.cloudinary.com/dazj8oisj/image/upload/v1738360793/abhi_logo_1_yhursc.png"
+            /*<a href="https://techshala.vercel.app/"><img class="logo" src="https://res.cloudinary.com/dazj8oisj/image/upload/v1738360793/abhi_logo_1_yhursc.png"
                     alt="TechShala Logo"></a>*/
             <div class="message">Course Registration Confirmation</div>
             <div class="body">
@@ -76,7 +76,7 @@ const courseEnrollmentemail = (courseName, name) => {
                     are excited to have you as a participant!</p>
                 <p>Please log in to your learning dashboard to access the course materials and start your learning journey.
                 </p>
-                <a class="cta" href="https://codeplay-edtech-project.vercel.app/dashboard">Go to Dashboard</a>
+                <a class="cta" href="https://techshala.vercel.app/">Go to Homepage</a>
             </div>
             <div class="support">If you have any questions or need assistance, please feel free to reach out to us at <a
                     href="mailto:info@techshala.com">info@techshala.com</a>. We are here to help!</div>
