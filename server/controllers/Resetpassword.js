@@ -36,7 +36,7 @@ exports.resetPasswordToken = async (req, res) => {
 
         //create url
 
-        const url=`http://localhost:3000/update-password/${token}`//frontend link hai
+        const url=`https://techshala.vercel.app/update-password/${token}`//frontend link hai
 
         //send mail containing url
         await mailsender(email,"Password reset link",`Password reset link:${url}`);
