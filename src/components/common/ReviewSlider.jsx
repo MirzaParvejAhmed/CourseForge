@@ -45,7 +45,7 @@ const ReviewSlider = () => {
           }}
           //pagination={{ clickable: true }} // Make sure pagination is clickable
           modules={[FreeMode, Pagination, Autoplay]} // Include all modules
-          className="w-[60rem] border-richblack-900"
+          className="w-full h-full border-richblack-900"
         >
           {reviews?.map((review, index) => (
             <SwiperSlide key={index}>
