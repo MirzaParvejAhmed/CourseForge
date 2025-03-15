@@ -88,6 +88,9 @@ const CourseReviewModal = ({setreviewModal}) => {
                     placeholder='Add your experience here...'
                     {...register("courseExperience",{required:true})}
                     className="form-style resize-x-none min-h-[130px] w-full"
+                     onKeyDown={(e) => {
+                       e.stopPropagation(); // Prevent event from bubbling up
+                     }}
                     />
                     {
                         errors.courseExperience && (<span className="ml-2 text-xs tracking-wide text-pink-200">
