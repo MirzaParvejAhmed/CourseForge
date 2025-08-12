@@ -34,7 +34,7 @@ const fileupload=require("express-fileupload");
 
 app.use(
     cors({
-        origin:"course-forge-opal.vercel.app",
+        origin:"https://course-forge-opal.vercel.app",
         credentials:true
     })
 )
