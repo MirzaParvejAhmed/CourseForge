@@ -26,7 +26,7 @@ const {
   isInstructor,
   isStudent,
   isAdmin,
-} = require("../middlewares/auth")
+} = require("../middlewares/authentication")
 
 
 router.post("/createCategory", auth, isAdmin, createCategory)
