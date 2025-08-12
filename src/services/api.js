@@ -1,5 +1,5 @@
 
-const BASE_URL = "https://courseforge-backend-w3rd.onrender.com"
+const BASE_URL = "https://courseforge-backend-w3rd.onrender.com/api/v1"
 
 // AUTH ENDPOINTS
 export const endpoints = {
