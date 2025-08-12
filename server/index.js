@@ -1,64 +1,57 @@
-const express=require("express");
-const app=express();
+const express = require("express");
+const app = express();
+const database = require("./config/database");
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
+const { cloudinaryConnect } = require("./config/cloudinary");
+const fileUpload = require("express-fileupload");
+const dotenv = require("dotenv");
+dotenv.config();
 
-require("dotenv").config();
+// Connect to the database
+database.connect();
 
-const PORT=process.env.PORT||4000
+// Middleware setup
 app.use(express.json());
-
-const cookieparser=require("cookie-parser");
-app.use(cookieparser());
-
-require("./config/database").dbconnect();
-require("./config/cloudinary").cloudinaryConnect();
-
-app.listen(PORT,()=>{
-    console.log(`server is running on port ${PORT}`);
-})
-
-app.get('/',(req,res)=>{
-    return res.json({
-        success:true,
-        message:`App is running succesfully on port ${PORT}`
-    })
-})
-
-const cors=require("cors")
-//importing routes
-const userroutes=require("./routes/user")
-const profileroutes=require("./routes/profile")
-const paymentroutes=require("./routes/payment")
-const courseroutes=require("./routes/Course")
-const contactUsRoute=require("./routes/contact")
-const fileupload=require("express-fileupload");
-
+app.use(cookieParser());
 app.use(
-    cors({
-        origin:"https://course-forge-opal.vercel.app",
-        credentials:true
-    })
-)
-
+  cors({
+    origin: "*",
+    credentials: true,
+  })
+);
 app.use(
-    fileupload({
-        useTempFiles:true,
-        tempFileDir:"/tmp/",
-    })
-)
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
+  })
+);
 
+// Cloudinary connection
+cloudinaryConnect();
 
-app.use('/api/v1/auth',userroutes);
-app.use('/api/v1/profile',profileroutes);
-app.use('/api/v1/payment',paymentroutes);
-app.use('/api/v1/course',courseroutes);
-app.use("/api/v1", contactUsRoute);
+// Importing all the routes
+const userRoutes = require("./routes/User");
+const profileRoutes = require("./routes/Profile");
+const courseRoutes = require("./routes/Course");
+const paymentRoutes = require("./routes/Payments");
 
+// Mounting the routes
+app.use("/api/v1/auth", userRoutes);
+app.use("/api/v1/profile", profileRoutes);
+app.use("/api/v1/course", courseRoutes);
+app.use("/api/v1/payment", paymentRoutes);
 
+// Default route for home page
+app.get("/", (req, res) => {
+  return res.json({
+    success: true,
+    message: "Your server is up and running...",
+  });
+});
 
-
-
-
-
-
-
-
+// Server activation
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+  console.log(`App is listening at ${PORT}`);
+});
