@@ -77,7 +77,7 @@ exports.categoryPageDetails = async (req, res) => {
     }
 
     const selectedCourses = selectedCategory.courses;
-    
+
     return res.status(200).json({
       success: true,
       data: {
