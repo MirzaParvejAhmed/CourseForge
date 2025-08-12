@@ -1,5 +1,3 @@
-// server/controllers/Category.js
-
 const Category = require("../models/Category");
 
 // Handler function to create a new category
