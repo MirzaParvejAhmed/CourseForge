@@ -1,7 +1,5 @@
-// server/routes/Course.js
-
-const express = require("express")
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 
 // Import the required controllers and middleware
 const {
@@ -12,13 +10,13 @@ const {
   editCourse,
   getInstructorCourses,
   deleteCourse,
-} = require("../controllers/Course")
+} = require("../controllers/Course");
 
 const {
   showAllCategories,
   createCategory,
   categoryPageDetails,
-} = require("../controllers/Category")
+} = require("../controllers/Category");
 
 // Import Middlewares
 const {
@@ -26,9 +24,14 @@ const {
   isInstructor,
   isStudent,
   isAdmin,
-} = require("../middlewares/authentication")
+} = require("../middlewares/authentication");
 
+// ********************************************************************************************************
+//                                      Category routes (Only by Admin)
+// ********************************************************************************************************
+// Category can only be created by Admin
+router.post("/createCategory", auth, isAdmin, createCategory);
+router.get("/showAllCategories", showAllCategories);
+router.post("/getCategoryPageDetails", categoryPageDetails);
 
-router.post("/createCategory", auth, isAdmin, createCategory)
-router.get("/showAllCategories", showAllCategories)
-router.post("/getCategoryPageDetails", categoryPageDetails)
+module.exports = router;
