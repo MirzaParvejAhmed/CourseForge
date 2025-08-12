@@ -34,7 +34,7 @@ const fileupload=require("express-fileupload");
 
 app.use(
     cors({
-        origin:"https://techshala.vercel.app",
+        origin:"https://course-forge-alpha.vercel.app",
         credentials:true
     })
 )
