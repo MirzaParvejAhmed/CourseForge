@@ -12,11 +12,6 @@ const {
   deleteCourse,
 } = require("../controllers/Course");
 
-const {
-  showAllCategories,
-  createCategory,
-  categoryPageDetails,
-} = require("../controllers/category");
 
 // Import Middlewares
 const {
