@@ -16,7 +16,7 @@ const {
   showAllCategories,
   createCategory,
   categoryPageDetails,
-} = require("../controllers/Category");
+} = require("../controllers/category");
 
 // Import Middlewares
 const {
