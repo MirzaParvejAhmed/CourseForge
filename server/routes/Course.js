@@ -3,30 +3,22 @@ const router = express.Router();
 
 // Import the required controllers and middleware
 const {
-  createCourse,
-  getAllCourses,
-  getCourseDetails,
-  getFullCourseDetails,
-  editCourse,
-  getInstructorCourses,
-  deleteCourse,
+  createCourse,
+  getAllCourses,
+  getCourseDetails,
+  getFullCourseDetails,
+  editCourse,
+  getInstructorCourses,
+  deleteCourse,
 } = require("../controllers/Course");
-
 
 // Import Middlewares
 const {
-  auth,
-  isInstructor,
-  isStudent,
-  isAdmin,
+  auth,
+  isInstructor,
+  isStudent,
+  isAdmin,
 } = require("../middlewares/authentication");
 
-// ********************************************************************************************************
-//                                      Category routes (Only by Admin)
-// ********************************************************************************************************
-// Category can only be created by Admin
-router.post("/createCategory", auth, isAdmin, createCategory);
-router.get("/showAllCategories", showAllCategories);
-router.post("/getCategoryPageDetails", categoryPageDetails);
 
 module.exports = router;
