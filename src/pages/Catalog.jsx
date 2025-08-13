@@ -15,18 +15,20 @@ const Catalog = () => {
   const [active, setActive] = useState(1);
   const [catalogPageData, setCatalogPageData] = useState(null);
   const [categoryId, setCategoryId] = useState("");
-  const [mostPopularCourses, setMostPopularCourses] = useState([]);
-  const [newCourses, setNewCourses] = useState([]);
 
-  // Fetch all categories
+  // Fetch all categories to get the category ID
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const response = await apiConnector("GET", categories.CATEGORIES_API);
-        const category_id = response.data.Allcategories.filter(
-          (ct) => ct.name.split(" ").join("-").toLowerCase() === catalogName
-        )[0]?._id;
-        setCategoryId(category_id);
+        
+        // Ensure data and Allcategories exist before filtering
+        if (response?.data?.Allcategories) {
+          const category_id = response.data.Allcategories.filter(
+            (ct) => ct.name.split(" ").join("-").toLowerCase() === catalogName
+          )?.[0]?._id; // Using optional chaining for safety
+          setCategoryId(category_id);
+        }
       } catch (error) {
         console.log("Could not fetch Categories.", error);
       }
@@ -34,33 +36,16 @@ const Catalog = () => {
     fetchCategories();
   }, [catalogName]);
 
-  // Fetch courses for the selected category
+  // Fetch catalog page data after getting the category ID
   useEffect(() => {
     if (categoryId) {
       (async () => {
         try {
           const res = await getCatelogPageData(categoryId);
-          if (res?.success) {
-            setCatalogPageData(res);
-            const allCourses = res.data.Selectedcategory?.courses || [];
-
-            if (allCourses.length > 0) {
-              const sortedByPopularity = [...allCourses].sort(
-                (a, b) => (b.studentsenrolled?.length || 0) - (a.studentsenrolled?.length || 0)
-              );
-              setMostPopularCourses(sortedByPopularity);
-
-              const sortedByDate = [...allCourses].sort(
-                (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-              );
-              setNewCourses(sortedByDate);
-            } else {
-              setMostPopularCourses([]);
-              setNewCourses([]);
-            }
-          }
+          setCatalogPageData(res);
         } catch (error) {
           console.log(error);
+          setCatalogPageData({ success: false }); // Set a flag to show error page
         }
       })();
     }
@@ -74,21 +59,10 @@ const Catalog = () => {
     );
   }
 
-  if (!catalogPageData.success) {
+  // Handle API failure by rendering the Error component
+  if (!catalogPageData?.success) {
     return <Error />;
   }
-
-  const {
-    Selectedcategory,
-    Differentcategories,
-    MostSellingCourses,
-  } = catalogPageData.data;
-
-  // Check if any courses were found
-  const coursesAvailable =
-    Selectedcategory?.courses?.length > 0 ||
-    Differentcategories?.courses?.length > 0 ||
-    MostSellingCourses?.length > 0;
 
   return (
     <>
@@ -97,83 +71,81 @@ const Catalog = () => {
           <p className="text-sm text-richblack-300">
             {`Home / Catalog / `}
             <span className="text-yellow-25">
-              {Selectedcategory?.name}
+              {catalogPageData?.data?.Selectedcategory?.name}
             </span>
           </p>
           <p className="text-3xl text-richblack-5">
-            {Selectedcategory?.name}
+            {catalogPageData?.data?.Selectedcategory?.name}
           </p>
           <p className="max-w-[870px] text-richblack-200">
-            {Selectedcategory?.description}
+            {catalogPageData?.data?.Selectedcategory?.description}
           </p>
         </div>
       </div>
 
-      {coursesAvailable ? (
-        <>
-          {/* section 1 */}
-          <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
-            <div className="section_heading">Courses to get you started</div>
-            <div className="my-4 flex border-b border-b-richblack-600 text-sm">
-              <p className={`px-4 py-2 ${
-                  active === 1
-                    ? "border-b border-b-yellow-25 text-yellow-25"
-                    : "text-richblack-50"
-                } cursor-pointer`}
-                onClick={() => setActive(1)}>
-                Most Popular
-              </p>
-              <p className={`px-4 py-2 ${
-                  active === 2
-                    ? "border-b border-b-yellow-25 text-yellow-25"
-                    : "text-richblack-50"
-                } cursor-pointer`}
-                onClick={() => setActive(2)}>
-                New
-              </p>
-            </div>
-            <div>
-              <CourseSlider
-                Courses={active === 1 ? mostPopularCourses : newCourses}
-              />
-            </div>
-          </div>
-
-          {/* section 2 */}
-          <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
-            <div className="section_heading">
-              Top courses in {Differentcategories?.name}
-            </div>
-            <div className="py-8">
-              <CourseSlider
-                Courses={Differentcategories.courses}
-              />
-            </div>
-          </div>
-
-          {/* section 3 */}
-          <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
-            <p className="section_heading">Frequently Bought Courses </p>
-            <div className="py-8">
-              <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                {MostSellingCourses?.slice(0, 4).map(
-                  (course, index) => (
-                    <CourseCard
-                      course={course}
-                      key={index}
-                      Height={"h-[400px]"}
-                    />
-                  )
-                )}
-              </div>
-            </div>
-          </div>
-        </>
-      ) : (
-        <div className="flex justify-center items-center py-20">
-          <p className="text-3xl font-semibold text-richblack-50">No Courses Found</p>
+      {/* Section 1 */}
+      <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
+        <div className="section_heading">Courses to get you started</div>
+        <div className="my-4 flex border-b border-b-richblack-600 text-sm">
+          <p
+            className={`px-4 py-2 ${
+              active === 1
+                ? "border-b border-b-yellow-25 text-yellow-25"
+                : "text-richblack-50"
+            } cursor-pointer`}
+            onClick={() => setActive(1)}
+          >
+            Most Popular
+          </p>
+          <p
+            className={`px-4 py-2 ${
+              active === 2
+                ? "border-b border-b-yellow-25 text-yellow-25"
+                : "text-richblack-50"
+            } cursor-pointer`}
+            onClick={() => setActive(2)}
+          >
+            New
+          </p>
         </div>
-      )}
+        {/* Course Slider */}
+        <div>
+          <CourseSlider
+            Courses={catalogPageData?.data?.Selectedcategory?.courses}
+          />
+        </div>
+      </div>
+
+      {/* Section 2 */}
+      <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
+        <div className="section_heading">
+          Top courses in {catalogPageData?.data?.Differentcategories?.name}
+        </div>
+        <div className="py-8">
+          {/* Slider */}
+          <CourseSlider
+            Courses={catalogPageData?.data?.Differentcategories?.courses}
+          />
+        </div>
+      </div>
+
+      {/* Section 3 */}
+      <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
+        <p className="section_heading">Frequently Bought Courses</p>
+        <div className="py-8">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            {catalogPageData?.data?.MostSellingCourses?.slice(0, 4).map(
+              (course, index) => (
+                <CourseCard
+                  course={course}
+                  key={index}
+                  Height={"h-[400px]"}
+                />
+              )
+            )}
+          </div>
+        </div>
+      </div>
 
       <Footer />
     </>
