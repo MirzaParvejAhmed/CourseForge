@@ -34,7 +34,7 @@ cloudinaryConnect();
 const userRoutes = require("./routes/user");
 const profileRoutes = require("./routes/profile");
 const courseRoutes = require("./routes/Course");
-const paymentRoutes = require("./routes/payments");
+const paymentRoutes = require("./routes/payment");
 
 // Mounting the routes
 app.use("/api/v1/auth", userRoutes);
