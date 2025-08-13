@@ -33,7 +33,7 @@ cloudinaryConnect();
 // Importing all the routes
 const userRoutes = require("./routes/user");
 const profileRoutes = require("./routes/profile");
-const courseRoutes = require("./routes/course");
+const courseRoutes = require("./routes/Course");
 const paymentRoutes = require("./routes/payments");
 
 // Mounting the routes
