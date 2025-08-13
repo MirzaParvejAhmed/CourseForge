@@ -32,9 +32,9 @@ cloudinaryConnect();
 
 // Importing all the routes
 const userRoutes = require("./routes/user");
-const profileRoutes = require("./routes/Profile");
-const courseRoutes = require("./routes/Course");
-const paymentRoutes = require("./routes/Payments");
+const profileRoutes = require("./routes/profile");
+const courseRoutes = require("./routes/course");
+const paymentRoutes = require("./routes/payments");
 
 // Mounting the routes
 app.use("/api/v1/auth", userRoutes);
